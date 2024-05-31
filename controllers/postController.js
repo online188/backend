@@ -37,7 +37,14 @@ exports.getPostBySlug = async (req, res) => {
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
     }
-    res.json({ post });
+    // res.json({ post });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+    const totalImages = post.images.length;
+    const images = post.images.slice(skip, skip + limit);
+
+    res.json({ post, images, currentPage: page, totalPages: Math.ceil(totalImages / limit) });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
