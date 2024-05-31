@@ -61,8 +61,8 @@ const postSchema = new mongoose.Schema({
 });
 
 postSchema.pre('save', function(next) {
-  if (this.isModified('model')) {
-    this.slug = slugify(this.model, { lower: true, strict: true });
+  if (this.isModified('title')) {
+    this.slug = slugify(this.title, { lower: true, strict: true });
   }
   next();
 });
