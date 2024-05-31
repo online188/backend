@@ -3,7 +3,11 @@ const mongoose = require('mongoose');
 const postSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true,
+    required: [true, 'A title must have a name'],
+    unique: true,
+    trim: true,
+    maxlength: [90, 'A title name must have less or equal then 90 characters'],
+    minlength: [3, 'A title name must have more or equal then 3 characters']
   },
   model: {
     type: String,
@@ -45,10 +49,21 @@ const postSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  slug: {
+    type: String,
+    unique: true,
+  },
   date: {
     type: Date,
     default: Date.now,
   },
+});
+
+postSchema.pre('save', function(next) {
+  if (this.isModified('model')) {
+    this.slug = slugify(this.model, { lower: true, strict: true });
+  }
+  next();
 });
 
 module.exports = mongoose.model('Post', postSchema);

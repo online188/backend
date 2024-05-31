@@ -30,6 +30,19 @@ exports.getRandomPosts = async (req, res) => {
   }
 };
 
+// Get post by slug
+exports.getPostBySlug = async (req, res) => {
+  try {
+    const post = await Post.findOne({ slug: req.params.slug });
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+    res.json({ post });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 // Get a single post by ID with pagination for images and increment post views
 exports.getPostById = async (req, res) => {
   try {

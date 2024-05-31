@@ -9,6 +9,9 @@ router.get('/random', postController.getRandomPosts);
 router.get('/top', postController.getTopPosts);
 router.get('/search', postController.searchPosts);
 
+// Route to get post by slug
+router.get('/slug/:slug', postController.getPostBySlug);
+
 // Existing routes...
 router.get('/', postController.getAllPosts);
 router.get('/:id', postController.getPostById); // This should come after the 'random' route
